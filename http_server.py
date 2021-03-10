@@ -123,20 +123,16 @@ def server(log_buffer=sys.stderr):
 
                 print("Request received:\n{}\n\n".format(request))
 
-                # TODO: Use parse_request to retrieve the path from the request.
-
-                # TODO: Use response_path to retrieve the content and the mimetype,
-                # based on the request path.
-
-                # TODO; If parse_request raised a NotImplementedError, then let
-                # response be a method_not_allowed response. If response_path raised
-                # a NameError, then let response be a not_found response. Else,
-                # use the content and mimetype from response_path to build a 
-                # response_ok.
-                response = response_ok(
-                    body=b"Welcome to my web server",
-                    mimetype=b"text/plain"
-                )
+                try:
+                    content, mime_type = response_path(parse_request(request))
+                    response = response_ok(
+                        body=content,
+                        mimetype=mime_type
+                    )
+                except NotImplementedError:
+                    response = response_method_not_allowed()
+                except NameError:
+                    response = response_not_found()
 
                 conn.sendall(response)
             except:
