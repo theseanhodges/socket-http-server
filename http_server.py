@@ -1,3 +1,4 @@
+import re
 import socket
 import sys
 import traceback
@@ -44,8 +45,12 @@ def parse_request(request):
     NotImplementedError if the method of the request is not GET.
     """
 
-    # TODO: implement parse_request
-    return ""
+    match = re.match(r"([^\s]+) ([^\s]+) ([^\s]+)", request)
+    if match:
+        if match.group(1) == "GET":
+            return match.group(2)
+    raise NotImplementedError
+    
 
 def response_path(path):
     """
