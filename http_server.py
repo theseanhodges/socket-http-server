@@ -28,8 +28,7 @@ def response_ok(body=b"This is a minimal response", mimetype=b"text/plain"):
         return b"""HTTP/1.1 200 OK
 Content-Type: """ + mimetype + b"""
 
-""" + body + b"""
-"""
+""" + body
     except TypeError:
         return b"""HTTP/1.1 500 INTERNAL SERVER ERROR
 Content-Type: text/html
@@ -37,7 +36,7 @@ Content-Type: text/html
 <title>500 Internal Server Error</title>
 <h1>Internal Server Error</h1>
 <p>The server encountered an error and could not complete your request.</p>
-"""
+""".replace(b'\n', b'\r\n')
 
 def response_method_not_allowed():
     """Returns a 405 Method Not Allowed response"""
@@ -48,7 +47,7 @@ Content-Type: text/html
 <title>405 Method Not Allowed</title>
 <h1>Method Not Allowed</h1>
 <p>The method is not allowed for the requested URL.</p>
-"""
+""".replace(b'\n', b'\r\n')
 
 
 def response_not_found():
@@ -61,7 +60,7 @@ Content-Type: text/html
 <title>404 Not Found/title>
 <h1>Not Found</h1>
 <p>The requested URL was not found on the server.</p>
-"""
+""".replace(b'\n', b'\r\n')
 
 
 def parse_request(request):
