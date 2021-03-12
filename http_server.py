@@ -38,14 +38,20 @@ Content-Type: text/html
 
 <title>500 Internal Server Error</title>
 <h1>Internal Server Error</h1>
-<p>The server encountered an error and could not complete your request</p>
+<p>The server encountered an error and could not complete your request.</p>
 """
 
 def response_method_not_allowed():
     """Returns a 405 Method Not Allowed response"""
 
-    # TODO: Implement response_method_not_allowed
-    return b""
+    return b"""
+HTTP/1.1 405 METHOD NOT ALLOWED
+Content-Type: text/html
+
+<title>405 Method Not Allowed</title>
+<h1>Method Not Allowed</h1>
+<p>The method is not allowed for the requested URL.</p>
+"""
 
 
 def response_not_found():
