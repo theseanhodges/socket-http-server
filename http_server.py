@@ -108,7 +108,10 @@ def response_path(path):
 
     file = Path(WEBROOT + path)
     if file.is_dir():
-        content = b"not implemented"
+        content = file.absolute().name
+        for child in file.iterdir():
+            content += '\n - ' + child.name
+        content = content.encode()
         mime_type = b"text/plain"
     elif file.is_file():
         content = file.read_bytes()
