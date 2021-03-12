@@ -1,7 +1,11 @@
+import mimetypes
 import re
 import socket
 import sys
 import traceback
+from pathlib import Path
+
+WEBROOT = "webroot"
 
 def response_ok(body=b"This is a minimal response", mimetype=b"text/plain"):
     """
@@ -20,8 +24,22 @@ def response_ok(body=b"This is a minimal response", mimetype=b"text/plain"):
         '''
     """
 
-    # TODO: Implement response_ok
-    return b""
+    try:
+        return b"""
+HTTP/1.1 200 OK
+Content-Type: """ + mimetype + b"""
+
+""" + body + b"""
+"""
+    except TypeError:
+        return b"""
+HTTP/1.1 500 INTERNAL SERVER ERROR
+Content-Type: text/html
+
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an error and could not complete your request</p>
+"""
 
 def response_method_not_allowed():
     """Returns a 405 Method Not Allowed response"""
@@ -80,19 +98,15 @@ def response_path(path):
 
     """
 
-    # TODO: Raise a NameError if the requested content is not present
-    # under webroot.
-
-    # TODO: Fill in the appropriate content and mime_type give the path.
-    # See the assignment guidelines for help on "mapping mime-types", though
-    # you might need to create a special case for handling make_time.py
-    #
-    # If the path is "make_time.py", then you may OPTIONALLY return the
-    # result of executing `make_time.py`. But you need only return the
-    # CONTENTS of `make_time.py`.
-    
-    content = b"not implemented"
-    mime_type = b"not implemented"
+    file = Path(WEBROOT + path)
+    if file.is_dir():
+        content = b"not implemented"
+        mime_type = b"text/plain"
+    elif file.is_file():
+        content = file.read_bytes()
+        mime_type = mimetypes.guess_type(file)[0].encode()
+    else:
+        raise NameError
 
     return content, mime_type
 
