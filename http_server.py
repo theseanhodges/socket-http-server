@@ -58,7 +58,14 @@ def response_not_found():
     """Returns a 404 Not Found response"""
 
     # TODO: Implement response_not_found
-    return b""
+    return b"""
+HTTP/1.1 404 NOT FOUND
+Content-Type: text/html
+
+<title>405 Not Found/title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server.</p>
+"""
 
 
 def parse_request(request):
