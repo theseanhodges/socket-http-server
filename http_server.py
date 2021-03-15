@@ -55,7 +55,6 @@ Content-Type: text/html
 def response_not_found():
     """Returns a 404 Not Found response"""
 
-    # TODO: Implement response_not_found
     return b"""HTTP/1.1 404 Not Found
 Content-Type: text/html
 
