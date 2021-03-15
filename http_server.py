@@ -57,7 +57,7 @@ def response_not_found():
     return b"""HTTP/1.1 404 NOT FOUND
 Content-Type: text/html
 
-<title>404 Not Found/title>
+<title>404 Not Found</title>
 <h1>Not Found</h1>
 <p>The requested URL was not found on the server.</p>
 """.replace(b'\n', b'\r\n')
