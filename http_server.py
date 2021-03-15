@@ -1,3 +1,5 @@
+import ast
+import io
 import mimetypes
 import re
 import socket
@@ -118,6 +120,22 @@ def response_path(path):
         mime_type = mimetypes.guess_type(file)[0].encode()
     else:
         raise NameError
+
+    if mime_type == b'text/x-python':
+        # If we ended up productionizing this we would want to scrub the, um, contents of content
+        # to make sure that it's not going to do anything bad.  Even though theoretically we're not
+        # taking inputs from untrusted sources here (we're /certainly/ not letting the user upload
+        # files..) we can't make a blanket trust statement here that the script isn't going to do
+        # anything nefarious like subprocess.Popen('rm -rf /'.split(' ')) or anything like that.
+        # Still, as an exercise:
+        # Create an IO buffer and set stdout to it -- we can compile the contents of file to
+        # bytecode and evaluate it with exec() or eval(), but it will print to stdout.
+        tmp = sys.stdout
+        eval_content = io.StringIO()
+        sys.stdout = eval_content
+        eval(compile(content, file.name, 'exec'))
+        content = eval_content.getvalue().encode()
+        sys.stdout = tmp
 
     return content, mime_type
 
