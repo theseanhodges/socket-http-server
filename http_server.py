@@ -136,6 +136,8 @@ def response_path(path):
         content = eval_content.getvalue().encode()
         sys.stdout = tmp
 
+        mime_type = b"text/html"
+
     return content, mime_type
 
 
